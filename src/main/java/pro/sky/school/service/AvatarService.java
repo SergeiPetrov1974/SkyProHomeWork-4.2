@@ -1,6 +1,8 @@
 package pro.sky.school.service;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class AvatarService {
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     @Value("avatars")
     private String avatarsDir;
@@ -35,6 +38,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Was invoked method to upload avatar for student '{}'", studentId);
         Student student = studentRepository.getById(studentId);
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(Objects.requireNonNull(avatarFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
@@ -57,6 +61,7 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long studentId) {
+        logger.info("Was invoked method to find avatar '{}'", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
@@ -70,6 +75,7 @@ public class AvatarService {
         if (avatarsList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        logger.info("Was invoked method to get all by pageNumber '{}' or pageSize '{}' ignoring case", pageNumber, pageSize);
         return ResponseEntity.ok(avatarsList);
     }
 }
