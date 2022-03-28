@@ -10,6 +10,7 @@ import pro.sky.school.service.StudentService;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("student")
@@ -70,6 +71,11 @@ public class StudentController {
     @GetMapping("last5")
     public ResponseEntity<Collection<Student>> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("/startWithA")
+    public List<String> getAllStudentNameStartingWithA() {
+        return studentService.getAllStudentsNameStartingWithA();
     }
 
 }

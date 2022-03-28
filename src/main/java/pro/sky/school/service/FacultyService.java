@@ -8,6 +8,7 @@ import pro.sky.school.model.Faculty;
 import pro.sky.school.repository.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 
 @Service
@@ -70,6 +71,14 @@ public class FacultyService {
         }
         logger.info("Was invoked method to find by color '{}' or name '{}' ignoring case", color, name);
         return faculties;
+    }
+
+    public String getTheLongestFacultyName() {
+        logger.info("Was invoked method to get the longest faculty name");
+        return repository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse(null);
     }
 
 }

@@ -9,7 +9,9 @@ import pro.sky.school.model.Student;
 import pro.sky.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -92,4 +94,22 @@ public class StudentService {
         return ResponseEntity.ok(studentList);
     }
 
+    public List<String> getAllStudentsNameStartingWithA() {
+        logger.info("Was invoked method to find all students starting with A");
+        return repository.findAll().stream()
+          //      .parallel()
+                .map(Student:: getName)
+                .map(String:: toUpperCase)
+                .filter(it -> it.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+    public int getStudentAverageAge() {
+        logger.info("Was invoked method to find the average student age");
+        //return ResponseEntity.ok(repository.getAverageAgeOfAllStudents());
+        return (int) repository.findAll().stream()
+                .mapToInt(Student:: getAge)
+                .average()
+                .orElse(0);
+    }
 }
