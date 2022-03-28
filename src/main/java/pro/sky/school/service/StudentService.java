@@ -1,5 +1,7 @@
 package pro.sky.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pro.sky.school.exception.*;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository repository;
+    Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
     public StudentService(StudentRepository repository) {
         this.repository = repository;
@@ -27,6 +30,7 @@ public class StudentService {
     }
 
     public Student findStudent(long id) {
+        logger.info("Was invoked method to find by find student '{}'", id);
         Optional<Student> optionalStudent = repository.findById(id);
         if (optionalStudent.isEmpty()) {
             throw new NotFoundException();
@@ -55,6 +59,7 @@ public class StudentService {
     }
 
     public Collection<Student> findByAge(int age) {
+        logger.info("Was invoked method to find age student '{}'", age);
         return repository.findByAge(age);
     }
 
@@ -66,6 +71,7 @@ public class StudentService {
         if (students.isEmpty()) {
             throw new NotFoundException();
         }
+        logger.info("Was invoked method to find by age1 '{}' or age2 '{}' ignoring case", age1, age2);
         return students;
     }
 

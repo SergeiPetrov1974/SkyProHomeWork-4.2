@@ -1,5 +1,7 @@
 package pro.sky.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pro.sky.school.exception.*;
 import pro.sky.school.model.Faculty;
@@ -12,12 +14,14 @@ import java.util.Optional;
 public class FacultyService {
 
     private final FacultyRepository repository;
+    Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
     public FacultyService(FacultyRepository repository) {
         this.repository = repository;
     }
 
     public Faculty createFaculty(Faculty faculty) {
+        logger.info("Was invoked method to create by faculty '{}'", faculty);
         try {
             return repository.save(faculty);
         } catch (RuntimeException e) {
@@ -26,6 +30,7 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
+        logger.info("Was invoked method to find by id '{}'", id);
         Optional<Faculty> optionalFaculty = repository.findById(id);
         if (optionalFaculty.isEmpty()) {
             throw new NotFoundException();
@@ -42,6 +47,7 @@ public class FacultyService {
     }
 
     public void deleteFaculty(long id) {
+        logger.info("Was invoked method to delete by id '{}'", id);
         try {
             repository.deleteById(id);
         } catch (RuntimeException e) {
@@ -62,6 +68,7 @@ public class FacultyService {
         if (faculties.isEmpty()) {
             throw new NotFoundException();
         }
+        logger.info("Was invoked method to find by color '{}' or name '{}' ignoring case", color, name);
         return faculties;
     }
 
