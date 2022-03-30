@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import pro.sky.school.model.Student;
 import pro.sky.school.service.StudentService;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
 @RestController
 @RequestMapping("student")
-@Validated
 public class StudentController {
     private final StudentService studentService;
 
@@ -23,7 +21,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student createStudent(@Valid @RequestBody Student student) {
+    public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
@@ -33,7 +31,7 @@ public class StudentController {
     }
 
     @PutMapping
-    public Student editStudent(@Valid @RequestBody Student student) {
+    public Student editStudent(@RequestBody Student student) {
         return studentService.editStudent(student);
     }
 
@@ -76,6 +74,15 @@ public class StudentController {
     @GetMapping("/startWithA")
     public List<String> getAllStudentNameStartingWithA() {
         return studentService.getAllStudentsNameStartingWithA();
+    }
+    @GetMapping("name-list-by-thread")
+    public ResponseEntity<Collection<String>> getNameListByThread() {
+        return studentService.getNameListByThread();
+    }
+
+    @GetMapping("name-list-by-sync-thread")
+    public ResponseEntity<Collection<String>> getNameListBySyncThread() {
+        return studentService.getNameListBySyncThread();
     }
 
 }
